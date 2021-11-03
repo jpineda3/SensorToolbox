@@ -1,6 +1,6 @@
 clear all; %#ok<CLALL>
 
-%% ADIS16480 Example
+%% ADIS16460 Example
 
 %% Setup
 % IMU

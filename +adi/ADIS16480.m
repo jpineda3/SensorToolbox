@@ -46,22 +46,29 @@ classdef ADIS16480 < adi.IMUBase
     
     %% Sensor specific APIs
     methods
-        function [accelReadings, gyroReadings, magReadings, valid] = read(obj)
-            [accelReadings, gyroReadings, magReadings, valid] = readAccelGyroMag(obj);
+        function [accelReadings, gyroReadings, varargout] = read(obj)
+            switch obj.EnabledChannels
+            case 6
+                accelReadings, gyroReadings, varargout] = readAccelGyro(obj);
+            case 9
+                varargout = cell(1,2);
+                [accelReadings, gyroReadings, varargout{1}, varargout{2}] = readAccelGyroMag(obj);
         end
     end
     
     %% API Functions
     methods (Hidden, Access = protected)
         
-        function [accelReadings, gyroReadings, magReadings, valid] = stepImpl(obj)
+        function [accelReadings, gyroReadings, varargout] = stepImpl(obj)
             [dataR, valid] = stepImpl@adi.common.Rx(obj);
             switch length(obj.EnabledChannels)
                 case 6
                     [accelReadings, gyroReadings] = stepAccelGyro(obj, dataR);
-                    magReadings = null(obj.SamplesPerRead,3);
+                    varargout = valid;
                 case 9
-                    [accelReadings, gyroReadings, magReadings] = stepAccelGyroMag(obj, dataR);
+                    varargout = cell(1,2);
+                    [accelReadings, gyroReadings, varargout{1}] = stepAccelGyroMag(obj, dataR);
+                    varargout{2} = valid;
             end
             
         end

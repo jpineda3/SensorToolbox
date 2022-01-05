@@ -38,7 +38,8 @@ lock(label: 'adgt_test_harness_boards') {
     //                   harness.stage_library("RecoverBoard"))
   
     // Test stage
-    harness.set_matlab_commands(["imu=adi.ADIS16480()",
+    harness.set_matlab_commands(["addpath(genpath('test'))",
+                                    "imu=adi.ADIS16480()",
                                     "imu.uri=getenv('IIO_URI')",
                                     "runtests('ADIS16480Tests','ProcedureName','testADIS16480')"])
     harness.add_stage(harness.stage_library("MATLABTests"),'continueWhenFail')

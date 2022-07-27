@@ -47,4 +47,6 @@ lock(label: 'adgt_test_harness_boards') {
   
     // Go go
     harness.run_stages()
+
+    // trigger git check
 }
